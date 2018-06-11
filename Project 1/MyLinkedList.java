@@ -219,8 +219,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public MyLinkedList<AnyType> reverse( )
     {
-        //TODO: investigate unchecked call
-        MyLinkedList r = new MyLinkedList();
+        MyLinkedList<AnyType> r = new MyLinkedList<>();
         for(AnyType x : this)
         {
             r.add(0, x);
@@ -240,6 +239,13 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     public void erase(int idx, int num)
     {
         Node<AnyType> s = getNode( idx );
+
+        // check if zero elements are to be erased
+        if(num <= 0)
+        {
+            return;
+        }
+
         Node<AnyType> e = getNode( idx + num - 1 );
         while(s != e)
         {
@@ -258,7 +264,11 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void insertList(int idx, MyLinkedList<AnyType> l)
     {
-        //TODO: insertList
+        Node<AnyType> i = getNode( idx ); // checks if idx is valid
+        for(AnyType x : l)
+        {
+            this.add(idx++, x);
+        }
     }
 
     /**
@@ -377,7 +387,7 @@ class TestLinkedList
         System.out.println( lst );
 
         //demonstrate reverse
-        MyLinkedList newList = lst.reverse();
+        MyLinkedList<Integer> newList = lst.reverse();
         System.out.println("Here's the reversed list:");
         System.out.println( newList );
 
@@ -396,7 +406,15 @@ class TestLinkedList
         System.out.println("Here's the list with elements 6-8 removed:");
         System.out.println( lst );
 
-        //TODO: demonstrate insertList
+        //demonstrate insertList
+        newList.doClear();
+        newList.add(111);
+        newList.add(222);
+        newList.add(333);
+        lst.insertList(10, newList);
+        System.out.println("Here's the list another list inserted:");
+        System.out.println( lst );
+
 
         //TODO: demonstrate shift
 

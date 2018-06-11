@@ -180,6 +180,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      * Receives two index positions as parameters and swaps the two nodes
      * (the nodes, not just the values inside) at these positions, provided
      * both positions are within the current size
+     * @param idx1 the index of the first node to swap.
+     * @param idx2 the index of the second node to swap.
      */
     public void swap( int idx1, int idx2)
     {
@@ -188,7 +190,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
 
     /**
      * Returns a new MyLinkedList that has the elements in reverse order.
-      */
+     * @return a reversed version of this list
+     */
     public MyLinkedList<AnyType> reverse( )
     {
 
@@ -199,6 +202,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      * removes elements beginning at the index position for the number of
      * elements specified, provided the index position is within the size
      * and together with the number of elements does not exceed the size
+     * @param idx the index of the first node to be erased.
+     * @param num the number of nodes to erase
      */
     public void erase(int idx, int num)
     {
@@ -209,6 +214,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      * receives a List and an index position as parameters, and copies all of the
      * passed list into the existing list at the position specified by the parameter,
      * provided the index position does not exceed the size
+     * @param idx the index where the new list should be inserted.
+     * @param l the new list to be inserted.
      */
     public void insertList(int idx, MyLinkedList<AnyType> l)
     {
@@ -221,6 +228,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      * passed -3, the last three nodes move to the front.
      *
      * e.g. +2:  abcde -> cdeab       -3:  abcde ->  cdeab
+     *
+     * @param spaces the number of spaces by which to shift this list
      */
 
     public void shift(int spaces)

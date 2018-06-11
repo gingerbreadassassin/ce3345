@@ -185,7 +185,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void swap( int idx1, int idx2)
     {
-        
+        //TODO: swap
     }
 
     /**
@@ -194,7 +194,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public MyLinkedList<AnyType> reverse( )
     {
-
+        //TODO: reverse
+        return new MyLinkedList<>();
     }
 
     /**
@@ -207,7 +208,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void erase(int idx, int num)
     {
-
+        //TODO: erase
     }
 
     /**
@@ -219,7 +220,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void insertList(int idx, MyLinkedList<AnyType> l)
     {
-
+        //TODO: insertList
     }
 
     /**
@@ -234,7 +235,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
 
     public void shift(int spaces)
     {
-
+        //TODO: shift
     }
 
     /**
@@ -346,5 +347,6 @@ class TestLinkedList
             itr.remove( );
             System.out.println( lst );
         }
+        //TODO: update main
     }
 }

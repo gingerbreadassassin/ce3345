@@ -177,6 +177,21 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     }
 
     /**
+     * Replaces the node at specified index with a new node.
+     * @param idx the index of the Node to be replaced.
+     * @param n the new node which will replace the old
+     */
+    public void replace( int idx, Node<AnyType> n)
+    {
+        Node<AnyType> o = getNode(idx);
+
+        n.prev = o.prev;
+        n.next = o.next;
+        o.prev.next = n;
+        n.next.prev = n;
+    }
+
+    /**
      * Receives two index positions as parameters and swaps the two nodes
      * (the nodes, not just the values inside) at these positions, provided
      * both positions are within the current size
@@ -186,6 +201,11 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     public void swap( int idx1, int idx2)
     {
         //TODO: swap
+        Node<AnyType> a = getNode(idx1);
+        Node<AnyType> b = getNode(idx2);
+
+        replace(idx1, b);
+        replace(idx2, a);
     }
 
     /**
@@ -334,6 +354,12 @@ class TestLinkedList
             lst.add( i );
         for( int i = 20; i < 30; i++ )
             lst.add( 0, i );
+
+        System.out.println( lst );
+
+        lst.swap(3, 5);
+
+        System.out.println( lst );
 
         lst.remove( 0 );
         lst.remove( lst.size( ) - 1 );

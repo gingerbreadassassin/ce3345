@@ -183,6 +183,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void replace( int idx, Node<AnyType> n)
     {
+        //TODO: replace
         Node<AnyType> o = getNode(idx);
 
         n.prev = o.prev;
@@ -373,6 +374,10 @@ class TestLinkedList
             itr.remove( );
             System.out.println( lst );
         }
-        //TODO: update main
+        //TODO: demonstrate swap
+        //TODO: demonstrate reverse
+        //TODO: demonstrate erase
+        //TODO: demonstrate insertList
+        //TODO: demonstrate shift
     }
 }

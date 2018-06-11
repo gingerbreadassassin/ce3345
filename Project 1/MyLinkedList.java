@@ -1,3 +1,5 @@
+import org.omg.CORBA.Any;
+
 /**
  * LinkedList class implements a doubly-linked list.
  */
@@ -190,6 +192,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
         n.next = o.next;
         o.prev.next = n;
         n.next.prev = n;
+
+        remove(o);
     }
 
     /**
@@ -215,8 +219,14 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public MyLinkedList<AnyType> reverse( )
     {
-        //TODO: reverse
-        return new MyLinkedList<>();
+        //TODO: investigate unchecked call
+        MyLinkedList r = new MyLinkedList();
+        for(AnyType x : this)
+        {
+            r.add(0, x);
+        }
+
+        return r;
     }
 
     /**
@@ -229,7 +239,14 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void erase(int idx, int num)
     {
-        //TODO: erase
+        Node<AnyType> s = getNode( idx );
+        Node<AnyType> e = getNode( idx + num - 1 );
+        while(s != e)
+        {
+            remove(s);
+            s = getNode( idx );
+        }
+        remove(e);
     }
 
     /**
@@ -356,16 +373,32 @@ class TestLinkedList
         for( int i = 20; i < 30; i++ )
             lst.add( 0, i );
 
+        System.out.println("Here's the initial list:");
         System.out.println( lst );
 
-        lst.swap(3, 5);
+        //demonstrate reverse
+        MyLinkedList newList = lst.reverse();
+        System.out.println("Here's the reversed list:");
+        System.out.println( newList );
 
-        System.out.println( lst );
+        //TODO: demonstrate swap
+        //lst.swap(3, 5);
+        //System.out.println("Here's the list with elements 3 and 5 swapped:");
+        //System.out.println( lst );
 
         lst.remove( 0 );
         lst.remove( lst.size( ) - 1 );
-
+        System.out.println("Here's the list with first and last elements removed:");
         System.out.println( lst );
+
+        //demonstrate erase
+        lst.erase(6, 3);
+        System.out.println("Here's the list with elements 6-8 removed:");
+        System.out.println( lst );
+
+        //TODO: demonstrate insertList
+
+        //TODO: demonstrate shift
 
         java.util.Iterator<Integer> itr = lst.iterator( );
         while( itr.hasNext( ) )
@@ -374,10 +407,5 @@ class TestLinkedList
             itr.remove( );
             System.out.println( lst );
         }
-        //TODO: demonstrate swap
-        //TODO: demonstrate reverse
-        //TODO: demonstrate erase
-        //TODO: demonstrate insertList
-        //TODO: demonstrate shift
     }
 }

@@ -177,6 +177,58 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     }
 
     /**
+     * Receives two index positions as parameters and swaps the two nodes
+     * (the nodes, not just the values inside) at these positions, provided
+     * both positions are within the current size
+     */
+    public void swap( int idx1, int idx2)
+    {
+        
+    }
+
+    /**
+     * Returns a new MyLinkedList that has the elements in reverse order.
+      */
+    public MyLinkedList<AnyType> reverse( )
+    {
+
+    }
+
+    /**
+     * receives an index position and number of elements as parameters, and
+     * removes elements beginning at the index position for the number of
+     * elements specified, provided the index position is within the size
+     * and together with the number of elements does not exceed the size
+     */
+    public void erase(int idx, int num)
+    {
+
+    }
+
+    /**
+     * receives a List and an index position as parameters, and copies all of the
+     * passed list into the existing list at the position specified by the parameter,
+     * provided the index position does not exceed the size
+     */
+    public void insertList(int idx, MyLinkedList<AnyType> l)
+    {
+
+    }
+
+    /**
+     * receives an integer and shifts the list this many nodes forward or backward,
+     * for example, if passed 2, the first two nodes move to the tail, or if
+     * passed -3, the last three nodes move to the front.
+     *
+     * e.g. +2:  abcde -> cdeab       -3:  abcde ->  cdeab
+     */
+
+    public void shift(int spaces)
+    {
+
+    }
+
+    /**
      * Returns a String representation of this collection.
      */
     public String toString( )

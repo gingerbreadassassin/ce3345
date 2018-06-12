@@ -179,24 +179,6 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     }
 
     /**
-     * Replaces the node at specified index with a new node.
-     * @param idx the index of the Node to be replaced.
-     * @param n the new node which will replace the old
-     */
-    public void replace( int idx, Node<AnyType> n)
-    {
-        //TODO: replace
-        Node<AnyType> o = getNode(idx);
-
-        n.prev = o.prev;
-        n.next = o.next;
-        o.prev.next = n;
-        n.next.prev = n;
-
-        remove(o);
-    }
-
-    /**
      * Receives two index positions as parameters and swaps the two nodes
      * (the nodes, not just the values inside) at these positions, provided
      * both positions are within the current size
@@ -205,12 +187,20 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void swap( int idx1, int idx2)
     {
-        //TODO: swap
         Node<AnyType> a = getNode(idx1);
         Node<AnyType> b = getNode(idx2);
 
-        replace(idx1, b);
-        replace(idx2, a);
+        a.prev.next = b;
+        a.next.prev = b;
+        b.prev.next = a;
+        b.next.prev = a;
+
+        Node<AnyType> c = a.prev;
+        a.prev = b.prev;
+        b.prev = c;
+        c = a.next;
+        a.next = b.next;
+        b.next = c;
     }
 
     /**
@@ -402,10 +392,10 @@ class TestLinkedList
         System.out.println("Here's the reversed list:");
         System.out.println( newList );
 
-        //TODO: demonstrate swap
-        //lst.swap(3, 5);
-        //System.out.println("Here's the list with elements 3 and 5 swapped:");
-        //System.out.println( lst );
+        //demonstrate swap
+        lst.swap(3, 5);
+        System.out.println("Here's the list with elements 3 and 5 swapped:");
+        System.out.println( lst );
 
         lst.remove( 0 );
         lst.remove( lst.size( ) - 1 );

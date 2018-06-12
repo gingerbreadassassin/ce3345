@@ -50,6 +50,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      * @param x any object.
      * @return true.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public boolean add( AnyType x )
     {
         add( size( ), x );
@@ -130,7 +131,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      * @return internal node corresponding to idx.
      * @throws IndexOutOfBoundsException if idx is not between lower and upper, inclusive.
      */
-    private Node<AnyType> getNode( int idx, int lower, int upper )
+    private Node<AnyType> getNode(int idx, @SuppressWarnings("SameParameterValue") int lower, int upper )
     {
         Node<AnyType> p;
 
@@ -254,7 +255,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void insertList(int idx, MyLinkedList<AnyType> l)
     {
-        Node<AnyType> i = getNode( idx ); // checks if idx is valid
+        getNode( idx ); // checks if idx is valid
         for(AnyType x : l)
         {
             this.add(idx++, x);
@@ -295,7 +296,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
         StringBuilder sb = new StringBuilder( "[ " );
 
         for( AnyType x : this )
-            sb.append( x + " " );
+            sb.append(x).append(" ");
         sb.append( "]" );
 
         return new String( sb );
@@ -397,6 +398,16 @@ class TestLinkedList
         System.out.println("Here's the list with elements 3 and 5 swapped:");
         System.out.println( lst );
 
+        // demonastrate swap with invalid index
+        try
+        {
+            System.out.println("Trying to use out of bounds index!");
+            lst.swap(8, lst.size());
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught out of bounds exception:");
+            System.out.println(e.toString());
+        }
+
         lst.remove( 0 );
         lst.remove( lst.size( ) - 1 );
         System.out.println("Here's the list with first and last elements removed:");
@@ -407,15 +418,36 @@ class TestLinkedList
         System.out.println("Here's the list with elements 6-8 removed:");
         System.out.println( lst );
 
+        // demonastrate erase with invalid index
+        try
+        {
+            System.out.println("Trying to use out of bounds index!");
+            lst.erase(8, lst.size());
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught out of bounds exception:");
+            System.out.println(e.toString());
+        }
+
         // demonstrate insertList
         newList.doClear();
         newList.add(111);
         newList.add(222);
         newList.add(333);
+        System.out.println("Here's the list to be inserted:");
+        System.out.println(newList);
         lst.insertList(10, newList);
-        System.out.println("Here's the list another list inserted:");
+        System.out.println("Here's the list with another list inserted:");
         System.out.println( lst );
 
+        // demonastrate insertList with invalid index
+        try
+        {
+            System.out.println("Trying to use out of bounds index!");
+            lst.insertList(lst.size(), newList);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught out of bounds exception:");
+            System.out.println(e.toString());
+        }
 
         // demonstrate shift
         lst.shift(-4);

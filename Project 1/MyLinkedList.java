@@ -283,7 +283,18 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
 
     public void shift(int spaces)
     {
-        //TODO: shift
+        while(spaces < 0)
+        {
+            AnyType x = remove(0);
+            add(x);
+            spaces++;
+        }
+        while(spaces > 0)
+        {
+            AnyType x = remove(size() - 1);
+            add(0, x);
+            spaces--;
+        }
     }
 
     /**
@@ -401,12 +412,12 @@ class TestLinkedList
         System.out.println("Here's the list with first and last elements removed:");
         System.out.println( lst );
 
-        //demonstrate erase
+        // demonstrate erase
         lst.erase(6, 3);
         System.out.println("Here's the list with elements 6-8 removed:");
         System.out.println( lst );
 
-        //demonstrate insertList
+        // demonstrate insertList
         newList.doClear();
         newList.add(111);
         newList.add(222);
@@ -416,8 +427,16 @@ class TestLinkedList
         System.out.println( lst );
 
 
-        //TODO: demonstrate shift
+        // demonstrate shift
+        lst.shift(-4);
+        System.out.println("Here's the list shifted 4 spaces left:");
+        System.out.println( lst );
+        lst.shift(6);
+        System.out.println("Here's the list shifted 6 spaces right:");
+        System.out.println( lst );
 
+        // demonstrate remove
+        System.out.println("Remove the first element until empty:");
         java.util.Iterator<Integer> itr = lst.iterator( );
         while( itr.hasNext( ) )
         {

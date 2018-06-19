@@ -113,6 +113,19 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     }
 
     /**
+     * Checks whether the specified index is within the limits of the list
+     * @param idx index to search at.
+     * @param lower lowest valid index.
+     * @param upper highest valid index.
+     */
+    private void checkBounds(int idx, int lower, int upper)
+    {
+        if( idx < lower || idx > upper )
+            throw new IndexOutOfBoundsException( "index: " + idx + "; size: " + size( ) + ". Called by " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+    }
+
+    /**
      * Gets the Node at position idx, which must range from 0 to size( ) - 1.
      * @param idx index to search at.
      * @return internal node corresponding to idx.
@@ -135,8 +148,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
     {
         Node<AnyType> p;
 
-        if( idx < lower || idx > upper )
-            throw new IndexOutOfBoundsException( "getNode index: " + idx + "; size: " + size( ) );
+        checkBounds(idx, lower, upper);
 
         if( idx < size( ) / 2 )
         {
@@ -229,7 +241,8 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void erase(int idx, int num)
     {
-        Node<AnyType> s = getNode( idx );
+        checkBounds(idx, 0, size() - 1);
+        checkBounds(idx + num - 1, 0, size() - 1);
 
         // check if zero elements are to be erased
         if(num <= 0)
@@ -237,13 +250,12 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
             return;
         }
 
+        Node<AnyType> s = getNode(idx);
+
         Node<AnyType> e = getNode( idx + num - 1 );
-        while(s != e)
-        {
-            remove(s);
-            s = getNode( idx );
-        }
-        remove(e);
+
+        e.next.prev = s.prev;
+        s.prev.next = e.next;
     }
 
     /**
@@ -255,7 +267,7 @@ public class MyLinkedList<AnyType> implements Iterable<AnyType>
      */
     public void insertList(int idx, MyLinkedList<AnyType> l)
     {
-        getNode( idx ); // checks if idx is valid
+        checkBounds(idx, 0, size() - 1);
         for(AnyType x : l)
         {
             this.add(idx++, x);
@@ -398,10 +410,10 @@ class TestLinkedList
         System.out.println("Here's the list with elements 3 and 5 swapped:");
         System.out.println( lst );
 
-        // demonastrate swap with invalid index
+        // demonstrate swap with invalid index
         try
         {
-            System.out.println("Trying to use out of bounds index!");
+            System.out.println("Swap method trying to use out of bounds index!");
             lst.swap(8, lst.size());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Caught out of bounds exception:");
@@ -418,10 +430,10 @@ class TestLinkedList
         System.out.println("Here's the list with elements 6-8 removed:");
         System.out.println( lst );
 
-        // demonastrate erase with invalid index
+        // demonstrate erase with invalid index
         try
         {
-            System.out.println("Trying to use out of bounds index!");
+            System.out.println("Erase method trying to use out of bounds index!");
             lst.erase(8, lst.size());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Caught out of bounds exception:");
@@ -439,10 +451,10 @@ class TestLinkedList
         System.out.println("Here's the list with another list inserted:");
         System.out.println( lst );
 
-        // demonastrate insertList with invalid index
+        // demonstrate insertList with invalid index
         try
         {
-            System.out.println("Trying to use out of bounds index!");
+            System.out.println("InsertList method trying to use out of bounds index!");
             lst.insertList(lst.size(), newList);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Caught out of bounds exception:");

@@ -14,6 +14,8 @@
 // ******************ERRORS********************************
 // Throws UnderflowException as appropriate
 
+import org.omg.CORBA.Any;
+
 /**
  * Implements an unbalanced binary search tree.
  * Note that all "matching" is based on the compareTo method.
@@ -312,11 +314,22 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
      * Print the root, then its children, then their children, etc.
      * This can be done using a queue.  Enqueue the root, then while the queue
      * is not empty, dequeue and print, and enqueue its children.
-     * @param t
      */
-    public void printByLevels ( BinaryNode<AnyType> t )
+    public void printByLevels( )
     {
+        MyLinkedList<AnyType> q = new MyLinkedList<>();
+        if( this.root == null ){ return; }
+        else {
+            q.add(this.root.element);
+        }
 
+        while ( !q.isEmpty() )
+        {
+            BinaryNode<AnyType> x = new BinaryNode<>( q.remove(0) );
+            if ( x.left != null ){ q.add( x.element ); }
+            if ( x.right != null ){ q.add( x.element ); }
+            System.out.println( x.element );
+        }
     }
     
     // Basic node stored in unbalanced binary search trees
@@ -365,6 +378,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
         System.out.println( t.numLeaves() );
         System.out.println( t.numLeftChildren() );
         System.out.println( t.isFull() );
+        t.printByLevels();
 
         //noinspection ConstantConditions
         if( NUMS < 40 )

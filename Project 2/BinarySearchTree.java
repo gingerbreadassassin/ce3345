@@ -232,29 +232,36 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
             return 1 + Math.max( height( t.left ), height( t.right ) );    
     }
 
+    public int size() {return size(this.root);}
+
     /**
      * TODO: size
      * returns an int of the number of nodes in the tree.  Use recursion.
      * @param t the node that roots the subtree.
      * @return s
      */
-    public int size( BinaryNode<AnyType> t )
+    private int size( BinaryNode<AnyType> t )
     {
-        int s = 0;
-        return s;
+        if( t == null ){ return 0; }
+        return 1 + size( t.left ) + size( t.right );
     }
+
+    public int numLeaves(){return numLeaves( this.root );}
 
     /**
      * TODO: numLeaves
-     * Returns the number of nodes that have a left child.  Use recursion.
+     * Returns the number of nodes that have no children.  Use recursion.
      * @param t the node that roots the subtree.
      * @return l
      */
-    public int numLeaves( BinaryNode<AnyType> t )
+    private int numLeaves( BinaryNode<AnyType> t )
     {
-        int l = 0;
-        return l;
+        if( t == null ){ return 0; }
+        else if( t.left == null && t.right == null ){ return 1; }
+        else return numLeaves( t.left ) + numLeaves( t.right );
     }
+
+    public int numLeftChildren(){ return numLeftChildren( this.root ); }
 
     /**
      * TODO: numLeftChildren
@@ -262,11 +269,14 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return lc
      */
-    public int numLeftChildren( BinaryNode<AnyType> t )
+    private int numLeftChildren( BinaryNode<AnyType> t )
     {
-        int lc = 0;
-        return lc;
+        if( t == null ){ return 0; }
+        else if ( t.left == null ){return numLeftChildren( t.right ); }
+        else return 1 + numLeftChildren( t.left ) + numLeftChildren( t.right );
     }
+
+    public boolean isFull(){ return isFull( this.root ); }
 
     /**
      * TODO: isFull
@@ -275,10 +285,14 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return f
      */
-    public boolean isFull ( BinaryNode<AnyType> t )
+    private boolean isFull ( BinaryNode<AnyType> t )
     {
-        boolean f = false;
-        return f;
+        if ( t == null){ return true; }
+        else if ( t.left == null && t.right == null ){ return true; }
+        else if ( t.left != null && t.right != null ) {
+            return isFull(t.left) && isFull(t.right);
+        }
+        else return false;
     }
 
     /**
@@ -336,7 +350,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
     public static void main( String [ ] args )
     {
         BinarySearchTree<Integer> t = new BinarySearchTree<>( );
-        final int NUMS = 4000;
+        final int NUMS = 39;
         final int GAP  =   37;
 
         System.out.println( "Checking... (no more output means success)" );
@@ -346,6 +360,11 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
 
         for( int i = 1; i < NUMS; i+= 2 )
             t.remove( i );
+
+        System.out.println( t.size() );
+        System.out.println( t.numLeaves() );
+        System.out.println( t.numLeftChildren() );
+        System.out.println( t.isFull() );
 
         //noinspection ConstantConditions
         if( NUMS < 40 )

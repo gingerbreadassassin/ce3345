@@ -234,27 +234,20 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
             return 1 + Math.max( height( t.left ), height( t.right ) );    
     }
 
-    public int size() {return size(this.root);}
-
     /**
-     * TODO: size
      * returns an int of the number of nodes in the tree.  Use recursion.
      * @param t the node that roots the subtree.
-     * @return s
      */
     private int size( BinaryNode<AnyType> t )
     {
         if( t == null ){ return 0; }
         return 1 + size( t.left ) + size( t.right );
     }
-
-    public int numLeaves(){return numLeaves( this.root );}
+    public int size() {return size(this.root);}
 
     /**
-     * TODO: numLeaves
      * Returns the number of nodes that have no children.  Use recursion.
      * @param t the node that roots the subtree.
-     * @return l
      */
     private int numLeaves( BinaryNode<AnyType> t )
     {
@@ -262,14 +255,11 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
         else if( t.left == null && t.right == null ){ return 1; }
         else return numLeaves( t.left ) + numLeaves( t.right );
     }
-
-    public int numLeftChildren(){ return numLeftChildren( this.root ); }
+    public int numLeaves(){return numLeaves( this.root );}
 
     /**
-     * TODO: numLeftChildren
      * Returns the number of nodes that have a left child.  Use recursion.
      * @param t the node that roots the subtree.
-     * @return lc
      */
     private int numLeftChildren( BinaryNode<AnyType> t )
     {
@@ -277,15 +267,12 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
         else if ( t.left == null ){return numLeftChildren( t.right ); }
         else return 1 + numLeftChildren( t.left ) + numLeftChildren( t.right );
     }
-
-    public boolean isFull(){ return isFull( this.root ); }
+    public int numLeftChildren(){ return numLeftChildren( this.root ); }
 
     /**
-     * TODO: isFull
      * Returns true if every node has either two children or no children.
      * (Assume an empty tree is full.)  Use recursion.
      * @param t the node that roots the subtree.
-     * @return f
      */
     private boolean isFull ( BinaryNode<AnyType> t )
     {
@@ -296,40 +283,64 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
         }
         else return false;
     }
+    public boolean isFull(){ return isFull( this.root ); }
 
     /**
-     * TODO: isPerfect
      * Returns true if every level of its height is filled.
-     * @param t the node that roots the subtree.
-     * @return p
      */
-    public boolean isPerfect ( BinaryNode<AnyType> t )
+    public boolean isPerfect ( )
     {
-        boolean p = false;
-        return p;
+        return Math.pow(2, height(this.root)+1)-1 ==size();
     }
 
     /**
-     * TODO: printByLevels
+     * @param x The value of an element to find in the tree
+     * @param t The root of the Tree
+     * @return The depth, if found, of the element
+     */
+    private int depth( AnyType x, BinaryNode<AnyType> t)
+    {
+        if( t == null )
+            return -1;
+
+        int compareResult = x.compareTo( t.element );
+
+        if( compareResult < 0 )
+            return 1 + depth( x, t.left );
+        else if( compareResult > 0 )
+            return 1 + depth( x, t.right );
+        else
+            return 1;    // Match
+    }
+    public int depth( AnyType x){ return depth( x, this.root ); }
+
+    /**
      * Print the root, then its children, then their children, etc.
      * This can be done using a queue.  Enqueue the root, then while the queue
      * is not empty, dequeue and print, and enqueue its children.
      */
     public void printByLevels( )
     {
-        MyLinkedList<AnyType> q = new MyLinkedList<>();
+        MyLinkedList<BinaryNode<AnyType>> q = new MyLinkedList<>();
         if( this.root == null ){ return; }
         else {
-            q.add(this.root.element);
+            q.add(this.root);
         }
 
         while ( !q.isEmpty() )
         {
-            BinaryNode<AnyType> x = new BinaryNode<>( q.remove(0) );
-            if ( x.left != null ){ q.add( x.element ); }
-            if ( x.right != null ){ q.add( x.element ); }
-            System.out.println( x.element );
+            BinaryNode<AnyType> x = q.remove(0);
+            if ( x.left != null ){ q.add( x.left ); }
+            if ( x.right != null ){ q.add( x.right ); }
+            System.out.print( x.element );
+            System.out.print(" ");
+            if(q.size() > 0) {
+                if (depth(x.element) < depth(q.get(0).element)) {
+                    System.out.println();
+                }
+            }
         }
+        System.out.println();
     }
     
     // Basic node stored in unbalanced binary search trees
@@ -359,41 +370,59 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
 
 
         // Test program
-        // TODO: update main to test new methods
     public static void main( String [ ] args )
     {
         BinarySearchTree<Integer> t = new BinarySearchTree<>( );
-        final int NUMS = 39;
-        final int GAP  =   37;
 
-        System.out.println( "Checking... (no more output means success)" );
-
-        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-            t.insert( i );
-
-        for( int i = 1; i < NUMS; i+= 2 )
-            t.remove( i );
-
-        System.out.println( t.size() );
-        System.out.println( t.numLeaves() );
-        System.out.println( t.numLeftChildren() );
-        System.out.println( t.isFull() );
-        t.printByLevels();
-
-        //noinspection ConstantConditions
-        if( NUMS < 40 )
-            t.printTree( );
-        if( t.findMin( ) != 2 || t.findMax( ) != NUMS - 2 )
-            System.out.println( "FindMin or FindMax error!" );
-
-        for( int i = 2; i < NUMS; i+=2 )
-             if( !t.contains( i ) )
-                 System.out.println( "Find error1!" );
-
-        for( int i = 1; i < NUMS; i+=2 )
-        {
-            if( t.contains( i ) )
-                System.out.println( "Find error2!" );
+        class PrintStuff {
+            public void doit()
+            {
+                t.printByLevels();
+                System.out.print("Tree has this many nodes: ");
+                System.out.println(t.size());
+                System.out.print("Tree has this many leaves: ");
+                System.out.println(t.numLeaves());
+                System.out.print("Tree has this many left children: ");
+                System.out.println(t.numLeftChildren());
+                System.out.print("The tree is full: ");
+                System.out.println(t.isFull());
+                System.out.print("The tree is perfect: ");
+                System.out.println(t.isPerfect());
+            }
         }
+
+        PrintStuff printer = new PrintStuff();
+
+        printer.doit();
+
+        t.insert(50);
+        t.insert(25);
+        t.insert(75);
+        t.insert(20);
+        t.insert(30);
+        t.insert(70);
+        t.insert(80);
+
+        printer.doit();
+
+        t.insert(15);
+
+        printer.doit();
+
+        t.insert(65);
+
+        printer.doit();
+
+        t.insert(21);
+        t.insert(71);
+
+        printer.doit();
+
+        t.insert(27);
+        t.insert(35);
+        t.insert(77);
+        t.insert(85);
+
+        printer.doit();
     }
 }

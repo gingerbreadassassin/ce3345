@@ -58,7 +58,7 @@ public class LinearProbingHashTable<K,V> {
     public boolean insert(K key, V value) {
         if( key == null )
             throw new IllegalArgumentException("Key is null!");
-        int currentPos = getLocation( key );
+        int currentPos = findPos( key );
         if( isActive( currentPos ))
             return false;
 
@@ -78,9 +78,15 @@ public class LinearProbingHashTable<K,V> {
      * @param key the item to earch for
      * @return value for key, or null if not found
      */
-    public V find(K key) {
-        int currentPos = getLocation( key );
-        return table[ currentPos ].value;
+    public V find( K key ) {
+        int currentPos = findPos( key );
+        Entry<K, V> entry = table [ currentPos ];
+        while( entry != null && entry.key != key)
+            entry = table [ ++currentPos ];
+        if( entry == null )
+            return null;
+        else
+            return entry.value;
     }
 
     /**
@@ -89,7 +95,7 @@ public class LinearProbingHashTable<K,V> {
      * @return true if deleted, false if not found
      */
     public boolean delete(K key) {
-        int currentPos = getLocation( key );
+        int currentPos = findPos( key );
         if( isActive( currentPos )) {
             table[ currentPos ].isActive = false;
             currentSize--;
@@ -122,10 +128,10 @@ public class LinearProbingHashTable<K,V> {
             if( entry == null )
                 t.append(String.format("%d%n", i));
             else if( entry.isActive )
-                t.append(String.format("%d  %s  %s  %n",
+                t.append(String.format("%d  %s,  %s  %n",
                         i, entry.key.toString(), entry.value.toString()));
             else
-                t.append(String.format("%d  %s  %s  %s%n",
+                t.append(String.format("%d  %s,  %s  %s%n",
                         i, entry.key.toString(), entry.value.toString(), "deleted"));
             i++;
         }
@@ -160,6 +166,20 @@ public class LinearProbingHashTable<K,V> {
      * @return returns the location for the given key, or -1 if not found.
      */
     public int getLocation(K key) {
+        int currentPos = myhash( key );
+
+        while ( table[ currentPos ] != null &&
+                !table[ currentPos ].key.equals( key )) {
+            currentPos++;
+            if( currentPos >= table.length )
+                currentPos -= table.length;
+        }
+        if( table[ currentPos ] == null )
+            return -1;
+        return currentPos;
+    }
+
+    private int findPos( K key ) {
         int currentPos = myhash( key );
 
         while ( table[ currentPos ] != null &&
@@ -243,25 +263,39 @@ public class LinearProbingHashTable<K,V> {
         H.insert("Last Name", "Ness");
         System.out.print("Trying insertion of \"Employee ID, 10\": ");
         System.out.println(H.insert("Employee ID", 10));
+        System.out.println("Printing table: ");
+        System.out.println(H);
         System.out.print("Trying insertion of \"Employee ID, 12.2\": ");
         System.out.println(H.insert("Employee ID", 12.2));
         System.out.print("Trying deletion of non-existent key, \"test\": ");
         System.out.println(H.delete("test"));
         System.out.print("Trying deletion of \"Employee ID\": ");
         System.out.println(H.delete("Employee ID"));
+        System.out.println("Printing table: ");
+        System.out.println(H);
+
         System.out.print("Trying insertion of \"Employee ID, 12.2\": ");
         System.out.println(H.insert("Employee ID", 12.2));
+        System.out.print("Trying to find value of non-existent key, \"test\": ");
+        System.out.println(H.find("test"));
+        System.out.print("Trying to find value of \"Employee ID\": ");
+        System.out.println(H.find("Employee ID"));
         System.out.println("Printing table: ");
         System.out.println(H);
         System.out.print("Hash value of \"Employee ID\": ");
         System.out.println(H.getHashValue("Employee ID"));
         System.out.print("Location of \"Employee ID\": ");
         System.out.println(H.getLocation("Employee ID"));
+        System.out.print("Location of \"test\": ");
+        System.out.println(H.getLocation("test"));
         System.out.println();
 
         System.out.println("Inserting lots of values:");
         for( int i = 0; i < 30; i++)
             H.insert(String.format("%d", i), String.format("Key %d", i));
+
+        System.out.print("Trying deletion of \"Employee ID\": ");
+        System.out.println(H.delete("Employee ID"));
 
         System.out.println("Printing new table: ");
         System.out.println(H);

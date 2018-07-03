@@ -1,8 +1,8 @@
 import java.io.Serializable;
 
 /**
- * @param <K>
- * @param <V>
+ * @param <K> Any type of object to use as key
+ * @param <V> Any type of object to use as value
  */
 public class LinearProbingHashTable<K,V> {
     /**

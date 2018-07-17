@@ -51,10 +51,9 @@ public class Selection {
                 try {
                     int n = Integer.parseInt(args[0]);
                     if(n >= 1 && n <= 8){
-                        Selection s = new Selection(n);
+                        new Selection(n);
                     } else {
                         System.out.println("Please choose n between 1 and 8 for default run!");
-                        return;
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number I could understand.");
@@ -64,10 +63,9 @@ public class Selection {
                     int n = Integer.parseInt(args[0]);
                     int m = Integer.parseInt(args[1]);
                     if((n >= 1 && n <= m) && (m <= 9999)){
-                        Selection s = new Selection(n, m);
+                        new Selection(n, m);
                     } else {
                         System.out.println("Please choose n between 1 and m, and m between n and 9999 for random run!");
-                        return;
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number I could understand.");
